@@ -163,8 +163,12 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
 	 * Buy order
 	 */
 	const handlePurchaseOrder = async () => {
-		if (order) {
-			await sdk.order.fill(order, { amount: parseInt(purchaseOrderForm.amount) }).then(a => a.build().runAll())
+		const id = await sdk.apis.order.getOrderByHash({ 
+			hash: purchaseOrderForm.hash.toString(),
+		})
+		console.log(id);
+		if (id) {
+			await sdk.order.fill(id, { amount: parseInt(purchaseOrderForm.amount) }).then(a => a.build().runAll())
 		}
 	}
 
