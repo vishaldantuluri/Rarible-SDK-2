@@ -167,8 +167,10 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
 			hash: purchaseOrderForm.hash.toString(),
 		})
 		console.log(id);
-		if (id) {
-			await sdk.order.fill(id, { amount: parseInt(purchaseOrderForm.amount) }).then(a => a.build().runAll())
+		setOrder(id)
+		setPurchaseOrderForm({ ...purchaseOrderForm, hash: id.hash })
+		if (order) {
+			await sdk.order.fill(order, { amount: parseInt(purchaseOrderForm.amount) }).then(a => a.build().runAll())
 		}
 	}
 
@@ -178,6 +180,7 @@ const Dashboard: React.FC<DashboardProps> = ({ provider, sdk, accounts }) => {
 	const handleGetMyNfts = async () => {
 		const items = await sdk.apis.nftItem.getNftItemsByOwner({ owner: accounts[0] })
 		setOwnedItems(items?.items)
+		console.log(items)
 	}
 
 	/**
